@@ -8,10 +8,9 @@
       "decryption": "none"
     },
     "streamSettings": {
-      "network": "xhttp",
-      "xhttpSettings": {
-        "path": "/vpn",
-        "mode": "packet"
+      "network": "grpc",
+      "grpcSettings": {
+        "serviceName": "grpc"
       }
     }
   }],
