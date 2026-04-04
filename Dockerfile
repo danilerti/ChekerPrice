@@ -1,14 +1,32 @@
 FROM alpine:latest
-RUN apk add --no-cache ca-certificates unzip
 
-# Копируем бинарник
-COPY data.bin /tmp/data.bin
+# Устанавливаем зависимости
+RUN apk add --no-cache ca-certificates curl
 
-# Распаковка
-RUN echo "dW56aXAgL3RtcC9kYXRhLmJpbiAtZCAvdXNyL2xvY2FsL2Jpbi8gJiYgY2htb2QgK3ggL3Vzci9sb2NhbC9iaW4vd2ViLWFwcA==" | base64 -d | sh && rm /tmp/data.bin
+# Скачиваем последнюю версию Xray
+RUN mkdir -p /usr/bin/xray && \
+    curl -L -o /tmp/xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip && \
+    unzip /tmp/xray.zip -d /usr/bin/xray && \
+    chmod +x /usr/bin/xray/xray && \
+    rm /tmp/xray.zip
 
-# НОВЫЙ КОНФИГ (WebSocket) - Строка точно кратна 4
-RUN printf "eyJsb2ciOnsibG9nbGV2ZWwiOiJub25lIn0sImluYm91bmRzIjpbeyJwb3J0Ijo3ODYwLCJwcm90b2NvbCI6InZsZXNzIiwic2V0dGluZ3MiOnsiY2xpZW50cyI6W3siaWQiOiIzMDY3NTJlMS0yYzdlLTQzMDAtYTg3NC1kZDRkZmI5MDA3ODYiLCJsZXZlbCI6MH1dLCJkZWNyeXB0aW9uIjoibm9uZSJ9LCJzdHJlYW1TZXR0aW5ncyI6eyJuZXR3b3JrIjoid3MiLCJ3c1NldHRpbmdzIjp7InBhdGgiOiIvIn19fV0sIm91dGJvdW5kcyI6W3sicHJvdG9jb2wiOiJmcmVlZG9tIn1dfQ==" | base64 -d > /tmp/config.json
+# Создаем конфиг (VLESS + WebSocket)
+# Choreo слушает порт 8080 по умолчанию
+RUN echo '{\
+  "inbounds": [{\
+    "port": 8080,\
+    "protocol": "vless",\
+    "settings": {\
+      "clients": [{"id": "306752e1-2c7e-4300-a874-dd4dfb900786"}],\
+      "decryption": "none"\
+    },\
+    "streamSettings": {\
+      "network": "ws",\
+      "wsSettings": {"path": "/"}\
+    }\
+  }],\
+  "outbounds": [{"protocol": "freedom"}]\
+}' > /etc/xray.json
 
 # Запуск
-CMD ["/usr/local/bin/web-app", "-c", "/tmp/config.json"]
+CMD ["/usr/bin/xray/xray", "-config", "/etc/xray.json"]
