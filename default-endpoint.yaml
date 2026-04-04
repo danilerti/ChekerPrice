@@ -1,16 +1,19 @@
 openapi: 3.0.1
 info:
-  title: 'default-endpoint'
+  title: 'cloud-flux-api'
   version: 1.0.0
 x-wso2-disable-security: true
 paths:
-  /*:
-    get:
+  /grpc.Tun/Tun:
+    post:
+      summary: "Main gRPC Tunnel"
       x-wso2-disable-security: true
       responses:
         '200':
           description: Ok
-    post:
+  /:
+    get:
+      summary: "Health Check"
       x-wso2-disable-security: true
       responses:
         '200':
