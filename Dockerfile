@@ -10,8 +10,12 @@ RUN mkdir -p /usr/bin/xray && \
     chmod +x /usr/bin/xray/xray && \
     rm /tmp/xray.zip
 
+# Создаем обычного пользователя (для безопасности Choreo)
+RUN addgroup -S xraygroup && adduser -S xrayuser -G xraygroup
+USER xrayuser
+
 # Создаем конфиг (VLESS + WebSocket)
-# Choreo слушает порт 8080 по умолчанию
+# В Choreo порт 8080 — стандарт
 RUN echo '{\
   "inbounds": [{\
     "port": 8080,\
@@ -26,7 +30,7 @@ RUN echo '{\
     }\
   }],\
   "outbounds": [{"protocol": "freedom"}]\
-}' > /etc/xray.json
+}' > /tmp/xray.json
 
-# Запуск
-CMD ["/usr/bin/xray/xray", "-config", "/etc/xray.json"]
+# Запуск с указанием конфига из временной папки (у xrayuser есть туда доступ)
+CMD ["/usr/bin/xray/xray", "-config", "/tmp/xray.json"]
