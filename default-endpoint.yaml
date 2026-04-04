@@ -6,14 +6,17 @@ x-wso2-disable-security: true
 paths:
   /grpc.Tun/Tun:
     post:
-      summary: "Main gRPC Tunnel"
       x-wso2-disable-security: true
       responses:
         '200':
           description: Ok
-  /:
+  /*:
     get:
-      summary: "Health Check"
+      x-wso2-disable-security: true
+      responses:
+        '200':
+          description: Ok
+    post:
       x-wso2-disable-security: true
       responses:
         '200':
