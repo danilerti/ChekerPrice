@@ -10,12 +10,7 @@ paths:
       responses:
         '200':
           description: Ok
-  /*:
-    get:
-      x-wso2-disable-security: true
-      responses:
-        '200':
-          description: Ok
+  /default/cloud-flux-api/v1.0/grpc.Tun/Tun:
     post:
       x-wso2-disable-security: true
       responses:
