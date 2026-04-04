@@ -1,7 +1,7 @@
 {
   "log": { "loglevel": "warning" },
   "inbounds": [{
-    "port": 10000,
+    "port": 8080,
     "protocol": "vless",
     "settings": {
       "clients": [{"id": "66e1d325-6c5f-47ab-98e5-34166db5b46a"}],
