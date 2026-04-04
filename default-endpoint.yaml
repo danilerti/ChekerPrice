@@ -4,42 +4,15 @@ info:
   version: 1.0.0
 x-wso2-disable-security: true
 security: []
-servers:
-  - url: /
 paths:
+  /grpc/Tun: # Это путь, который использует gRPC по умолчанию
+    post:
+      responses:
+        '200':
+          description: Ok
   /*:
     get:
-      operationId: operation1_get_default
       x-wso2-disable-security: true
-      security: []
-      responses:
-        '200':
-          description: Ok
-    put:
-      operationId: operation1_put_default
-      x-wso2-disable-security: true
-      security: []
-      responses:
-        '200':
-          description: Ok
-    post:
-      operationId: operation1_post_default
-      x-wso2-disable-security: true
-      security: []
-      responses:
-        '200':
-          description: Ok
-    delete:
-      operationId: operation1_delete_default
-      x-wso2-disable-security: true
-      security: []
-      responses:
-        '200':
-          description: Ok
-    patch:
-      operationId: operation1_patch_default
-      x-wso2-disable-security: true
-      security: []
       responses:
         '200':
           description: Ok
