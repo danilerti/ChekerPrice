@@ -11,11 +11,15 @@ RUN mkdir -p /usr/bin/xray && \
     rm /tmp/xray.zip
 
 # Создаем обычного пользователя (для безопасности Choreo)
-RUN addgroup -S xraygroup && adduser -S xrayuser -G xraygroup
-USER xrayuser
+# Присваиваем ему UID 10014, как в примере ошибки
+RUN addgroup -S xraygroup && adduser -S xrayuser -u 10014 -G xraygroup
 
-# Создаем конфиг (VLESS + WebSocket)
-# В Choreo порт 8080 — стандарт
+# Даем права пользователю на папку с конфигом (используем /etc/xray для примера)
+RUN mkdir -p /etc/xray && chown -R xrayuser:xraygroup /etc/xray
+
+USER 10014
+
+# Создаем конфиг (VLESS + WebSocket) прямо в доступной директории
 RUN echo '{\
   "inbounds": [{\
     "port": 8080,\
@@ -30,7 +34,7 @@ RUN echo '{\
     }\
   }],\
   "outbounds": [{"protocol": "freedom"}]\
-}' > /tmp/xray.json
+}' > /etc/xray/config.json
 
-# Запуск с указанием конфига из временной папки (у xrayuser есть туда доступ)
-CMD ["/usr/bin/xray/xray", "-config", "/tmp/xray.json"]
+# Запуск
+CMD ["/usr/bin/xray/xray", "-config", "/etc/xray/config.json"]
