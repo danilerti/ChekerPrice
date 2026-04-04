@@ -1,17 +1,23 @@
 openapi: 3.0.1
 info:
-  title: 'default-endpoint'
+  title: 'Cloud-Flux-VPN'
   version: 1.0.0
 x-wso2-disable-security: true
 security: []
 paths:
-  /grpc/Tun: # Это путь, который использует gRPC по умолчанию
+  /grpc.Tun/Tun:
     post:
+      x-wso2-disable-security: true
       responses:
         '200':
           description: Ok
   /*:
     get:
+      x-wso2-disable-security: true
+      responses:
+        '200':
+          description: Ok
+    post:
       x-wso2-disable-security: true
       responses:
         '200':
