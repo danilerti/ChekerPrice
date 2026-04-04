@@ -16,13 +16,12 @@
         "decryption": "none"
       },
       "streamSettings": {
-        "network": "xhttp",
+        "network": "ws",
         "security": "none",
-        "xhttpSettings": {
+        "wsSettings": {
           "path": "/vpn"
         }
-      },
-      "udp": true
+      }
     }
   ],
   "outbounds": [
